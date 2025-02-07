@@ -20,7 +20,7 @@ const app = express();
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' ? 'https://yourdomain.com' : 'http://localhost:5173',
+  origin: process.env.NODE_ENV === 'production' ? 'https://equal-maryjane-blackduck-c7d1f9fc.koyeb.app' : 'http://localhost:5173',
   credentials: true
 }));
 
