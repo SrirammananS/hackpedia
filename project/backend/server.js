@@ -16,11 +16,12 @@ const __dirname = dirname(__filename);
 dotenv.config();
 
 const app = express();
+app.set('trust proxy', 1); // ✅ Add this to trust proxies (like Koyeb)
 
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' ? 'https://yourdomain.com' : 'http://localhost:5173',
+  origin: process.env.NODE_ENV === 'production' ? 'https://hackpedia.vercel.app' : 'http://localhost:5173',
   credentials: true
 }));
 
