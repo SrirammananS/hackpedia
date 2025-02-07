@@ -11,7 +11,7 @@ export default defineConfig({
       '/api': {
         target: 'https://equal-maryjane-blackduck-c7d1f9fc.koyeb.app',
         // target: 'http://localhost:5000',
-        changeOrigin: true,
+        changeOrigin: false,
       },
     },
   },

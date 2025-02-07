@@ -20,8 +20,15 @@ app.set('trust proxy', 1); // ✅ Add this to trust proxies (like Koyeb)
 
 // Security middleware
 app.use(helmet());
+// app.use(cors({
+//   origin: process.env.NODE_ENV === 'production' ? 'https://hackpedia.vercel.app' : 'http://localhost:5173',
+//   credentials: true
+// }));
+
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' ? 'https://hackpedia.vercel.app' : 'http://localhost:5173',
+  origin: process.env.NODE_ENV === 'production'
+    ? ['https://hackpedia.vercel.app', 'https://equal-maryjane-blackduck-c7d1f9fc.koyeb.app']  // ✅ Allow Vercel & BE
+    : 'http://localhost:5173',
   credentials: true
 }));
 
