@@ -37,7 +37,7 @@ function Home() {
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-2">
           <Shield className="h-10 w-10 text-indigo-600" />
-          Vulnerability Library
+          HackPedia - The Vulnerability Library
         </h1>
         <p className="text-lg text-gray-600">
           Explore and learn about various security vulnerabilities
