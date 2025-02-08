@@ -5,28 +5,22 @@ import dotenv from 'dotenv';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
 import authRoutes from './routes/auth.js';
 import vulnerabilityRoutes from './routes/vulnerabilities.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 dotenv.config();
 
 const app = express();
-app.set('trust proxy', 1); // ✅ Add this to trust proxies (like Koyeb)
 
 // Security middleware
 app.use(helmet());
 
-
+// Configure CORS for production
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production'
-    ? ['https://hackpedia.vercel.app', 'https://equal-maryjane-blackduck-c7d1f9fc.koyeb.app']  // ✅ Allow Vercel & BE
-    : 'http://localhost:5179',
-  credentials: true
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 const limiter = rateLimit({
@@ -41,6 +35,12 @@ app.use(cookieParser());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/vulnerabilities', vulnerabilityRoutes);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Something went wrong!' });
+});
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)

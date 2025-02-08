@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { Shield, Search } from 'lucide-react';
 import VulnerabilityModal from '../components/VulnerabilityModal';
+import { vulnerabilitiesAPI } from '../api';
 
 interface Vulnerability {
   _id: string;
@@ -23,7 +23,7 @@ function Home() {
   const { data: vulnerabilities = [], isLoading } = useQuery({
     queryKey: ['vulnerabilities'],
     queryFn: async () => {
-      const { data } = await axios.get('/api/vulnerabilities');
+      const { data } = await vulnerabilitiesAPI.getAll();
       return data;
     }
   });
@@ -86,4 +86,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Home

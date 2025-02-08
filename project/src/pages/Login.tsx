@@ -19,8 +19,8 @@ function Login() {
       await login(email, password);
       toast.success('Login successful!');
       navigate('/dashboard');
-    } catch (error) {
-      toast.error('Invalid credentials');
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Invalid credentials');
     } finally {
       setIsLoading(false);
     }

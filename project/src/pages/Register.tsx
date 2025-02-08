@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Mail, Lock } from 'lucide-react';
-import axios from 'axios';
+import { authAPI } from '../api';
 import toast from 'react-hot-toast';
 
 function Register() {
@@ -15,7 +15,7 @@ function Register() {
     setIsLoading(true);
 
     try {
-      await axios.post('/api/auth/register', { email, password });
+      await authAPI.register(email, password);
       toast.success('Registration successful! Please log in.');
       navigate('/login');
     } catch (error: any) {

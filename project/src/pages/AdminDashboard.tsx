@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { Shield, Plus, Edit, Trash2, Search, X } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { vulnerabilitiesAPI } from '../api';
 
 interface Vulnerability {
   _id: string;
@@ -47,14 +47,14 @@ function AdminDashboard() {
   const { data: vulnerabilities = [], isLoading } = useQuery({
     queryKey: ['vulnerabilities'],
     queryFn: async () => {
-      const { data } = await axios.get('/api/vulnerabilities');
+      const { data } = await vulnerabilitiesAPI.getAll();
       return data;
     }
   });
 
   const createMutation = useMutation({
     mutationFn: (newVuln: VulnerabilityFormData) => 
-      axios.post('/api/vulnerabilities', newVuln),
+      vulnerabilitiesAPI.create(newVuln),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['vulnerabilities'] });
       toast.success('Vulnerability created successfully');
@@ -67,7 +67,7 @@ function AdminDashboard() {
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: string; data: VulnerabilityFormData }) =>
-      axios.put(`/api/vulnerabilities/${id}`, data),
+      vulnerabilitiesAPI.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['vulnerabilities'] });
       toast.success('Vulnerability updated successfully');
@@ -80,7 +80,7 @@ function AdminDashboard() {
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) =>
-      axios.delete(`/api/vulnerabilities/${id}`),
+      vulnerabilitiesAPI.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['vulnerabilities'] });
       toast.success('Vulnerability deleted successfully');
